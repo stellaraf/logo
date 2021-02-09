@@ -21,6 +21,9 @@
   "author": "Matt Love <matt@stellar.tech>",
   "license": "BSD-3-Clause-Clear",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/**/*.ts",
