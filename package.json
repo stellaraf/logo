@@ -1,0 +1,67 @@
+{
+  "name": "@stellaraf/logo",
+  "version": "0.1.0",
+  "description": "Stellar's Logo as a React Component",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stellaraf/logo"
+  },
+  "bugs": {
+    "url": "https://github.com/stellaraf/logo/issues"
+  },
+  "homepage": "https://github.com/stellaraf/logo#readme",
+  "files": [
+    "dist/",
+    "esm/"
+  ],
+  "author": "Matt Love <matt@stellar.tech>",
+  "license": "BSD-3-Clause-Clear",
+  "private": false,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --loglevel warn -c .",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "rollup -c",
+    "build": "yarn build:types && yarn build:js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.13",
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-typescript": "^7.12.13",
+    "@rollup/plugin-babel": "^5.2.3",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.1",
+    "@rollup/plugin-typescript": "^8.1.1",
+    "@types/node": "^14.14.25",
+    "@types/react": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "eslint": "^7.19.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "framer-motion": "^3.3.0",
+    "prettier": "^2.2.1",
+    "prettier-eslint": "^12.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "rollup": "^2.38.5",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.1.0",
+    "typescript": "^4.1.3"
+  },
+  "peerDependencies": {
+    "framer-motion": "^3.3.0",
+    "react": "^17.0.1"
+  }
+}
