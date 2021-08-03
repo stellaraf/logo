@@ -17,7 +17,10 @@ export const StellarColors = {
  * @param props {StellarLogoProps}
  * @see https://stellar.tech
  */
-export const StellarLogo: React.FC<StellarLogoProps> = (props: StellarLogoProps) => {
+export const StellarLogo: React.ForwardRefExoticComponent<StellarLogoProps> = React.forwardRef<
+  SVGSVGElement,
+  StellarLogoProps
+>((props: StellarLogoProps, ref) => {
   const {
     height: heightProp,
     width: widthProp,
@@ -92,8 +95,9 @@ export const StellarLogo: React.FC<StellarLogoProps> = (props: StellarLogoProps)
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMinYMin meet"
       viewBox={viewBox}
-      width={width}
       height={height}
+      width={width}
+      ref={ref}
       {...motionProps}
     >
       <defs>
@@ -204,4 +208,4 @@ export const StellarLogo: React.FC<StellarLogoProps> = (props: StellarLogoProps)
       )}
     </motion.svg>
   );
-};
+});
