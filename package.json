@@ -1,6 +1,6 @@
 {
   "name": "@stellaraf/logo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Stellar's Logo as a React Component",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
