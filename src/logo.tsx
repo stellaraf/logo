@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion } from 'framer-motion';
+import { motion, isValidMotionProp } from 'framer-motion';
 
 import type { StellarLogoProps, StellarColorsType } from './types';
 
@@ -19,31 +19,48 @@ export const StellarColors = {
  */
 export const StellarLogo: React.FC<StellarLogoProps> = (props: StellarLogoProps) => {
   const {
-    size,
-    height,
-    width,
+    height: heightProp,
+    width: widthProp,
     colorMode = 'light',
     showTagline = false,
     showReserved = false,
     noAnimate = false,
+    children,
     ...rest
   } = props;
 
-  const sizeProps = React.useMemo(() => {
-    let sizeProps = {};
-    if (height) {
-      sizeProps = { ...sizeProps, height };
+  const motionProps = React.useMemo(() => {
+    const result = {};
+    for (const [key, value] of Object.entries(rest)) {
+      if (isValidMotionProp(key)) {
+        result[key] = value;
+      }
     }
-    if (width) {
-      sizeProps = { ...sizeProps, width };
-    } else if (size) {
-      sizeProps = { ...sizeProps, width: size };
+  }, [rest]);
+
+  const width = React.useMemo(() => {
+    let value = widthProp ?? 380;
+
+    if (showReserved && value === 380) {
+      value = 400;
     }
-  }, [height, width, size]);
+
+    return value;
+  }, [widthProp, showReserved]);
+
+  const height = React.useMemo(() => {
+    let value = heightProp ?? 150;
+
+    if (showTagline && value === 150) {
+      value = 190;
+    }
+
+    return value;
+  }, [heightProp, showTagline]);
 
   const animate = React.useMemo(() => {
     if (noAnimate) {
-      return {};
+      return { scale: 1, rotate: 0 };
     } else {
       return { scale: [0, 0.5, 1, 1.25, 1.5, 1, 0.75, 1], rotate: [0, 0, 0, 15, 20, 0, 0, 0] };
     }
@@ -58,13 +75,26 @@ export const StellarLogo: React.FC<StellarLogoProps> = (props: StellarLogoProps)
     }
   }, [colorMode]);
 
+  const viewBox = React.useMemo<string>(() => {
+    let x = '380';
+    let y = '150';
+    if (showReserved) {
+      x = '400';
+    }
+    if (showTagline) {
+      y = '190';
+    }
+    return `0 0 ${x} ${y}`;
+  }, [showReserved, showTagline]);
+
   return (
     <motion.svg
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMinYMin meet"
-      viewBox={showReserved ? '0 0 400 150' : '0 0 380 150'}
-      {...sizeProps}
-      {...rest}
+      viewBox={viewBox}
+      width={width}
+      height={height}
+      {...motionProps}
     >
       <defs>
         <linearGradient id="logoGradient" gradientTransform="rotate(90)">
@@ -126,55 +156,49 @@ export const StellarLogo: React.FC<StellarLogoProps> = (props: StellarLogoProps)
           <>
             <path
               d="M394.15,47.46A5.85,5.85,0,1,0,400,53.31,5.85,5.85,0,0,0,394.15,47.46Zm0,10.73A4.88,4.88,0,1,1,399,53.31,4.89,4.89,0,0,1,394.15,58.19Z"
-              fill="currentColor"
+              fill={fill}
             />
             <path
               d="M395.1,53.41v0a1.57,1.57,0,0,0,1.14-1.54,1.5,1.5,0,0,0-.47-1.14,2.49,2.49,0,0,0-1.75-.5,8,8,0,0,0-1.49.13v6h.78V53.67H394c.71,0,1,.34,1.21,1.17a7.79,7.79,0,0,0,.4,1.44h.81a9.16,9.16,0,0,1-.47-1.65A1.49,1.49,0,0,0,395.1,53.41Zm-1-.33h-.79V50.87a3.51,3.51,0,0,1,.77-.07c.82,0,1.38.35,1.38,1.13S394.93,53.08,394.1,53.08Z"
-              fill="currentColor"
+              fill={fill}
             />
           </>
         )}
       </g>
       {showTagline && (
         <g>
-          <path d="M7.27,177.2H6V160H0v-1.2H13.24V160h-6Z" fill="currentColor" />
-          <path
-            d="M41.41,177.2h-10V158.83h10V160H32.64v7h8.28v1.18H32.64V176h8.77Z"
-            fill="currentColor"
-          />
+          <path d="M7.27,177.2H6V160H0v-1.2H13.24V160h-6Z" fill={fill} />
+          <path d="M41.41,177.2h-10V158.83h10V160H32.64v7h8.28v1.18H32.64V176h8.77Z" fill={fill} />
           <path
             d="M68.81,159.72a6.94,6.94,0,0,0-5.44,2.21,8.72,8.72,0,0,0-2,6.06,9.07,9.07,0,0,0,1.87,6.11,6.69,6.69,0,0,0,5.36,2.17,14.32,14.32,0,0,0,4.25-.59v1.13a13.83,13.83,0,0,1-4.55.65,7.73,7.73,0,0,1-6.1-2.51A10.15,10.15,0,0,1,60,168,11,11,0,0,1,61.05,163a7.67,7.67,0,0,1,3-3.3,9.07,9.07,0,0,1,4.63-1.16,11.14,11.14,0,0,1,4.82,1L73,160.72A9.32,9.32,0,0,0,68.81,159.72Z"
-            fill="currentColor"
+            fill={fill}
           />
           <path
             d="M105.67,177.2h-1.3v-9H93.63v9H92.35V158.83h1.28V167h10.74v-8.15h1.3Z"
-            fill="currentColor"
+            fill={fill}
           />
           <path
             d="M139.63,177.2h-1.29l-10.89-16.31h-.1c.1,1.94.15,3.41.15,4.4V177.2h-1.23V158.83h1.28l10.87,16.29h.08c-.08-1.51-.11-2.94-.11-4.3v-12h1.24Z"
-            fill="currentColor"
+            fill={fill}
           />
           <path
             d="M175.68,168a10.26,10.26,0,0,1-2.19,6.92,8.39,8.39,0,0,1-12.05,0,10.3,10.3,0,0,1-2.19-6.95,10.12,10.12,0,0,1,2.21-6.9,8.45,8.45,0,0,1,12,0A10.28,10.28,0,0,1,175.68,168Zm-15,0a9.36,9.36,0,0,0,1.76,6.1,7,7,0,0,0,10.12,0,11.47,11.47,0,0,0,0-12.21,7.06,7.06,0,0,0-10.11,0A9.27,9.27,0,0,0,160.65,168Z"
-            fill="currentColor"
+            fill={fill}
           />
-          <path d="M195.3,177.2V158.83h1.28V176h8.77v1.2Z" fill="currentColor" />
+          <path d="M195.3,177.2V158.83h1.28V176h8.77v1.2Z" fill={fill} />
           <path
             d="M239.36,168a10.26,10.26,0,0,1-2.19,6.92,8.39,8.39,0,0,1-12,0,10.3,10.3,0,0,1-2.19-6.95,10.12,10.12,0,0,1,2.21-6.9,7.6,7.6,0,0,1,6-2.52,7.51,7.51,0,0,1,6,2.53A10.28,10.28,0,0,1,239.36,168Zm-15,0a9.36,9.36,0,0,0,1.76,6.1,7,7,0,0,0,10.12,0,11.47,11.47,0,0,0,0-12.21,7.06,7.06,0,0,0-10.11,0A9.27,9.27,0,0,0,224.33,168Z"
-            fill="currentColor"
+            fill={fill}
           />
           <path
             d="M266.21,167.94H273v8.38a15.14,15.14,0,0,1-6,1.14,8.73,8.73,0,0,1-6.67-2.46q-2.32-2.46-2.32-7a10.5,10.5,0,0,1,1.15-5,8.07,8.07,0,0,1,3.3-3.35,10,10,0,0,1,4.92-1.18,12.64,12.64,0,0,1,5.39,1.1l-.51,1.16a11.68,11.68,0,0,0-5-1.11,7.55,7.55,0,0,0-5.76,2.25A8.41,8.41,0,0,0,259.4,168q0,4.15,2,6.24c1.35,1.4,3.33,2.09,5.95,2.09a11.47,11.47,0,0,0,4.31-.71v-6.46h-5.47Z"
-            fill="currentColor"
+            fill={fill}
           />
-          <path d="M293,177.2V158.83h1.28V177.2Z" fill="currentColor" />
-          <path
-            d="M324.92,177.2h-10V158.83h10V160h-8.76v7h8.27v1.18h-8.27V176h8.76Z"
-            fill="currentColor"
-          />
+          <path d="M293,177.2V158.83h1.28V177.2Z" fill={fill} />
+          <path d="M324.92,177.2h-10V158.83h10V160h-8.76v7h8.27v1.18h-8.27V176h8.76Z" fill={fill} />
           <path
             d="M354.63,172.47a4.43,4.43,0,0,1-1.69,3.64,7,7,0,0,1-4.5,1.35,13.89,13.89,0,0,1-5.16-.75v-1.28a13.07,13.07,0,0,0,5.06.84,5.68,5.68,0,0,0,3.59-1,3.31,3.31,0,0,0,1.33-2.73,3.14,3.14,0,0,0-.44-1.72,3.93,3.93,0,0,0-1.44-1.25,16.84,16.84,0,0,0-2.91-1.22,10,10,0,0,1-3.89-2.1,4.47,4.47,0,0,1,.54-6.36,6.38,6.38,0,0,1,4.15-1.3,12.25,12.25,0,0,1,4.87,1l-.47,1.11a11.26,11.26,0,0,0-4.37-1,5.15,5.15,0,0,0-3.25.95,3.07,3.07,0,0,0-1.2,2.56,3.3,3.3,0,0,0,.37,1.67,3.34,3.34,0,0,0,1.21,1.18,16.9,16.9,0,0,0,2.89,1.25,14.92,14.92,0,0,1,3.23,1.44,4.58,4.58,0,0,1,1.58,1.58A4.35,4.35,0,0,1,354.63,172.47Z"
-            fill="currentColor"
+            fill={fill}
           />
         </g>
       )}
