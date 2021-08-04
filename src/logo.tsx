@@ -24,12 +24,12 @@ export const StellarColors = {
 export const StellarLogo: ComponentType = React.forwardRef<SVGSVGElement, StellarLogoProps>(
   (props: StellarLogoProps, ref: React.ForwardedRef<SVGSVGElement>) => {
     const {
-      height: heightProp,
-      width: widthProp,
+      showReserved = false,
       colorMode = 'light',
       showTagline = false,
-      showReserved = false,
+      height: heightProp,
       noAnimate = false,
+      width: widthProp,
       children,
       ...rest
     } = props;
@@ -71,14 +71,7 @@ export const StellarLogo: ComponentType = React.forwardRef<SVGSVGElement, Stella
       }
     }, [noAnimate]);
 
-    const fill = React.useMemo(() => {
-      switch (colorMode) {
-        case 'dark':
-          return 'currentColor';
-        case 'light':
-          return 'url(#logoGradient)';
-      }
-    }, [colorMode]);
+    const fill = colorMode === 'light' ? 'url(#logoGradient)' : 'currentColor';
 
     const viewBox = React.useMemo<string>(() => {
       let x = '380';
