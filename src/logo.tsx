@@ -1,7 +1,8 @@
-import * as React from 'react';
-import { motion, isValidMotionProp } from 'framer-motion';
+import { forwardRef, useMemo } from "react";
+import { motion, isValidMotionProp } from "framer-motion";
 
-import type { StellarLogoProps, StellarColorsType } from './types';
+import type { MotionProps } from "framer-motion";
+import type { StellarLogoProps, StellarColorsType } from "./types";
 
 type ComponentType = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<StellarLogoProps> & React.RefAttributes<SVGSVGElement>
@@ -11,21 +12,21 @@ type ComponentType = React.ForwardRefExoticComponent<
  * Stellar Technologies Primary Colors.
  */
 export const StellarColors = {
-  blue: '#2915d6',
-  purple: '#9100fa',
+  blue: "#2915d6",
+  purple: "#9100fa",
 } as StellarColorsType;
 
 /**
  * The Stellar Technologies Inc. Logo.
  *
- * @param props {StellarLogoProps}
+ * @param props
  * @see https://stellar.tech
  */
-export const StellarLogo: ComponentType = React.forwardRef<SVGSVGElement, StellarLogoProps>(
+export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoProps>(
   (props: StellarLogoProps, ref: React.ForwardedRef<SVGSVGElement>) => {
     const {
       showReserved = false,
-      colorMode = 'light',
+      colorMode = "light",
       showTagline = false,
       height: heightProp,
       noAnimate = false,
@@ -34,16 +35,18 @@ export const StellarLogo: ComponentType = React.forwardRef<SVGSVGElement, Stella
       ...rest
     } = props;
 
-    const motionProps = React.useMemo(() => {
-      const result = {};
+    const motionProps = useMemo<MotionProps>(() => {
+      const result: MotionProps = {};
       for (const [key, value] of Object.entries(rest)) {
         if (isValidMotionProp(key)) {
-          result[key] = value;
+          const motionKey = key as keyof MotionProps;
+          result[motionKey] = value;
         }
       }
+      return result;
     }, [rest]);
 
-    const width = React.useMemo(() => {
+    const width = useMemo(() => {
       let value = widthProp ?? 380;
 
       if (showReserved && value === 380) {
@@ -53,7 +56,7 @@ export const StellarLogo: ComponentType = React.forwardRef<SVGSVGElement, Stella
       return value;
     }, [widthProp, showReserved]);
 
-    const height = React.useMemo(() => {
+    const height = useMemo(() => {
       let value = heightProp ?? 150;
 
       if (showTagline && value === 150) {
@@ -63,24 +66,22 @@ export const StellarLogo: ComponentType = React.forwardRef<SVGSVGElement, Stella
       return value;
     }, [heightProp, showTagline]);
 
-    const animate = React.useMemo(() => {
-      if (noAnimate) {
-        return { scale: 1, rotate: 0 };
-      } else {
-        return { scale: [0, 0.5, 1, 1.25, 1.5, 1, 0.75, 1], rotate: [0, 0, 0, 15, 20, 0, 0, 0] };
-      }
+    const animate = useMemo(() => {
+      return noAnimate
+        ? { scale: 1, rotate: 0 }
+        : { scale: [0, 0.5, 1, 1.25, 1.5, 1, 0.75, 1], rotate: [0, 0, 0, 15, 20, 0, 0, 0] };
     }, [noAnimate]);
 
-    const fill = colorMode === 'light' ? 'url(#logoGradient)' : 'currentColor';
+    const fill = colorMode === "light" ? "url(#logoGradient)" : "currentColor";
 
-    const viewBox = React.useMemo<string>(() => {
-      let x = '380';
-      let y = '150';
+    const viewBox = useMemo<string>(() => {
+      let x = "380";
+      let y = "150";
       if (showReserved) {
-        x = '400';
+        x = "400";
       }
       if (showTagline) {
-        y = '190';
+        y = "190";
       }
       return `0 0 ${x} ${y}`;
     }, [showReserved, showTagline]);

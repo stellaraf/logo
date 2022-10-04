@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { StellarLogo } from './logo';
-import type { StellarLogoProps } from './types';
-import type { Meta, Args, Story } from '@storybook/react';
+import { StellarLogo } from "./logo";
+
+import type { StellarLogoProps } from "./types";
+import type { Meta, Args, Story } from "@storybook/react";
 
 export default {
-  title: 'Stellar Logo',
+  title: "Stellar Logo",
   component: StellarLogo,
   argTypes: {
     colorMode: {
-      options: ['light', 'dark'],
-      mapping: { light: 'light', dark: 'dark' },
-      control: { type: 'select', labels: { light: 'Light', dark: 'Dark' } },
+      options: ["light", "dark"],
+      mapping: { light: "light", dark: "dark" },
+      control: { type: "select", labels: { light: "Light", dark: "Dark" } },
     },
   },
 } as Meta<StellarLogoProps>;

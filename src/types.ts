@@ -1,6 +1,6 @@
-import type { SVGMotionProps } from 'framer-motion';
+import type { SVGMotionProps } from "framer-motion";
 
-export interface StellarLogoProps extends SVGMotionProps<'svg'> {
+export interface StellarLogoProps extends SVGMotionProps<"svg"> {
   /**
    * Show the "TECHNOLOGIES" block below the logo.
    *
@@ -25,7 +25,7 @@ export interface StellarLogoProps extends SVGMotionProps<'svg'> {
    *
    * @defaultValue `'light'`
    */
-  colorMode?: 'light' | 'dark';
+  colorMode?: "light" | "dark";
 }
 
 export type StellarColorsType = {
