@@ -1,4 +1,4 @@
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useMemo, useId } from "react";
 import { motion, isValidMotionProp } from "framer-motion";
 
 import type { MotionProps, AnimationProps } from "framer-motion";
@@ -31,6 +31,8 @@ export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoP
       ...rest
     } = props;
 
+    const gradientId = useId();
+
     const motionProps: MotionProps = Object.fromEntries(
       Object.entries(rest).filter(([k]) => isValidMotionProp(k)),
     );
@@ -61,10 +63,7 @@ export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoP
         : { scale: [0, 0.5, 1, 1.25, 1.5, 1, 0.75, 1], rotate: [0, 0, 0, 15, 20, 0, 0, 0] };
     }, [noAnimate]);
 
-    const fill = useMemo<string>(
-      () => (colorMode === "light" ? "url(#logoGradient)" : "currentColor"),
-      [colorMode],
-    );
+    const fill = colorMode === "light" ? `url(#${gradientId})` : "currentColor";
 
     const viewBox = useMemo<string>(() => {
       let x = "380";
@@ -89,7 +88,7 @@ export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoP
         {...motionProps}
       >
         <defs>
-          <linearGradient id="logoGradient" gradientTransform="rotate(90)">
+          <linearGradient id={gradientId} gradientTransform="rotate(90)">
             <stop offset="5%" stopColor={StellarColors.purple} />
             <stop offset="95%" stopColor={StellarColors.blue} />
           </linearGradient>
