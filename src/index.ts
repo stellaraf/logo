@@ -1,2 +1,2 @@
 export * from "./logo.js";
-export * from "./types.js";
+export type { StellarColorsType, StellarLogoProps } from "./types.js";

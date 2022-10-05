@@ -32,3 +32,7 @@ export type StellarColorsType = {
   blue: string;
   purple: string;
 };
+
+export type ComponentType = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<StellarLogoProps> & React.RefAttributes<SVGSVGElement>
+>;

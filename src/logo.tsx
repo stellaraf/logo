@@ -1,12 +1,8 @@
 import { forwardRef, useMemo } from "react";
 import { motion, isValidMotionProp } from "framer-motion";
 
-import type { MotionProps } from "framer-motion";
-import type { StellarLogoProps, StellarColorsType } from "./types";
-
-type ComponentType = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<StellarLogoProps> & React.RefAttributes<SVGSVGElement>
->;
+import type { MotionProps, AnimationProps } from "framer-motion";
+import type { ComponentType, StellarLogoProps, StellarColorsType } from "./types";
 
 /**
  * Stellar Technologies Primary Colors.
@@ -35,18 +31,11 @@ export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoP
       ...rest
     } = props;
 
-    const motionProps = useMemo<MotionProps>(() => {
-      const result: MotionProps = {};
-      for (const [key, value] of Object.entries(rest)) {
-        if (isValidMotionProp(key)) {
-          const motionKey = key as keyof MotionProps;
-          result[motionKey] = value;
-        }
-      }
-      return result;
-    }, [rest]);
+    const motionProps: MotionProps = Object.fromEntries(
+      Object.entries(rest).filter(([k]) => isValidMotionProp(k)),
+    );
 
-    const width = useMemo(() => {
+    const width = useMemo<StellarLogoProps["width"]>(() => {
       let value = widthProp ?? 380;
 
       if (showReserved && value === 380) {
@@ -56,7 +45,7 @@ export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoP
       return value;
     }, [widthProp, showReserved]);
 
-    const height = useMemo(() => {
+    const height = useMemo<StellarLogoProps["height"]>(() => {
       let value = heightProp ?? 150;
 
       if (showTagline && value === 150) {
@@ -66,13 +55,16 @@ export const StellarLogo: ComponentType = forwardRef<SVGSVGElement, StellarLogoP
       return value;
     }, [heightProp, showTagline]);
 
-    const animate = useMemo(() => {
+    const animate = useMemo<AnimationProps["animate"]>(() => {
       return noAnimate
         ? { scale: 1, rotate: 0 }
         : { scale: [0, 0.5, 1, 1.25, 1.5, 1, 0.75, 1], rotate: [0, 0, 0, 15, 20, 0, 0, 0] };
     }, [noAnimate]);
 
-    const fill = colorMode === "light" ? "url(#logoGradient)" : "currentColor";
+    const fill = useMemo<string>(
+      () => (colorMode === "light" ? "url(#logoGradient)" : "currentColor"),
+      [colorMode],
+    );
 
     const viewBox = useMemo<string>(() => {
       let x = "380";

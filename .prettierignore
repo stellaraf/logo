@@ -1,5 +1,5 @@
 node_modules
 dist
 esm
-yarn.lock
-package-lock.json
+*.lock
+*-lock.*
