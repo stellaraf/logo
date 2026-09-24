@@ -46,7 +46,8 @@ jobs:
           region: us-west-1
           bucket: stellaraf-public-ci-961341522852-us-west-1
           path: ${{ steps.ci-pnpm-cache.outputs.path }}
-          key: cache/${{ github.repository }}/${{ github.ref }}/pnpm-8.15.9/${{ runner.os }}/${{ runner.arch }}/${{ steps.ci-pnpm-cache.outputs.node }}/${{ 
+          key:
+            cache/${{ github.repository }}/${{ github.ref }}/pnpm-8.15.9/${{ runner.os }}/${{ runner.arch }}/${{ steps.ci-pnpm-cache.outputs.node }}/${{
             hashFiles('pnpm-lock.yaml') }}
           use-fallback: false
       - name: Install dependencies
